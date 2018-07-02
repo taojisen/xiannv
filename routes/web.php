@@ -12,10 +12,13 @@
 */
     // Route::group([],function(){
     //     Route::get('/admins','admin\IndexController@index');
-        
     // });
-    Route::resource('/admin/user','admin\UserController');
-    Route::resource('/admin/cate','admin\CateController');
+    Route::resource('/admins/user','admin\UserController');
+
+    Route::group([],function(){
+        Route::resource('/admins/cate','admin\CateController');
+        Route::get('/admins/cate/{id}/create','admin\CateController@add' );
+    });
 
     // Route::get('/', function () {
     //     return view('home.index');

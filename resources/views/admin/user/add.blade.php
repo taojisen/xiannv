@@ -1,15 +1,11 @@
 @extends('layout.admins')
-
 @section('title',$title)
-
-
 @section('content')
 <div class="mws-panel grid_8">
 	<div class="mws-panel-header">
     	<span>{{$title}}</span>
     </div>
     <div class="mws-panel-body no-padding">
-
     		@if (count($errors) > 0)
 			    <div class="mws-form-message error">
 			        <ul>
@@ -19,8 +15,6 @@
 			        </ul>
 			    </div>
 			@endif
-
-
     	<form action="/admin/user" method='post' class="mws-form" enctype='multipart/form-data'>
     		<div class="mws-form-inline">
     			<div class="mws-form-row">
@@ -84,10 +78,7 @@
     	</form>
     </div>    	
 </div>
-
-
 @endsection
-
 @section('js')
 <script type="text/javascript">
 	

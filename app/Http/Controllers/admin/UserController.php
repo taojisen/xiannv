@@ -17,8 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-        // $res = User::paginate(10);
+        
+        $res = User::paginate(10);
 
         return view('admin.user.index',[
             'title'=>'用户的列表页面'

@@ -251,7 +251,7 @@
 
     <!-- Demo Scripts (remove if not needed) -->
     <script src="/admins/js/demo/demo.dashboard.js"></script>
-
-
+    @section('js')
+    @show
 </body>
 </html>
