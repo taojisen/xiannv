@@ -21,47 +21,34 @@
 			@endif
 
 
-    	<form action="/admin/user" method='post' class="mws-form" enctype='multipart/form-data'>
+    	<form action="/admin/user/{{$res->id}}" method='post' class="mws-form" enctype='multipart/form-data'>
     		<div class="mws-form-inline">
     			<div class="mws-form-row">
     				<label class="mws-form-label">用户名</label>
     				<div class="mws-form-item">
-    					<input type="text" class="small" name='username'>
-    				</div>
-    			</div>
-
-    			<div class="mws-form-row">
-    				<label class="mws-form-label">密码</label>
-    				<div class="mws-form-item">
-    					<input type="password" class="small" name='password'>
-    				</div>
-    			</div>
-
-    			<div class="mws-form-row">
-    				<label class="mws-form-label">确认密码</label>
-    				<div class="mws-form-item">
-    					<input type="password" class="small" name='repass'>
+    					<input type="text" class="small" name='username' value='{{$res->username}}'>
     				</div>
     			</div>
 
     			<div class="mws-form-row">
     				<label class="mws-form-label">邮箱</label>
     				<div class="mws-form-item">
-    					<input type="text" class="small" name='email'>
+    					<input type="text" class="small" name='email' value='{{$res->email}}'>
     				</div>
     			</div>
 
     			<div class="mws-form-row">
     				<label class="mws-form-label">手机号</label>
     				<div class="mws-form-item">
-    					<input type="text" class="small" name='phone'>
+    					<input type="text" class="small" name='phone' value='{{$res->phone}}'>
     				</div>
     			</div>
 
     			<div class="mws-form-row">
     				<label class="mws-form-label">头像</label>
     				<div class="mws-form-item">
-    					<!-- <input type="file" class="small" name='profile'> -->
+
+                        <img src="{{$res->profile}}" alt="" width='200'>
 
     					<input type="file" name='profile' class="fileinput-preview" style="width: 100%; padding-right: 84px;" readonly="readonly" placeholder="No file selected...">
     				</div>
@@ -70,8 +57,12 @@
     				<label class="mws-form-label">状态</label>
     				<div class="mws-form-item clearfix">
     					<ul class="mws-form-list inline">
-    						<li><input type="radio" name='status' value='1' checked='checked'> <label>启动</label></li>
-    						<li><input type="radio" name='status' value='0'> <label>禁止</label></li>
+
+    						<li><input type="radio" name='status' value='1' @if($res->status == '1') checked='checked' @endif> <label>启动</label></li>
+
+
+    						<li><input type="radio" name='status' value='0'  @if($res->status == '0') checked='checked' @endif> <label>禁止</label></li>
+
     					</ul>
     				</div>
     			</div>
@@ -79,7 +70,9 @@
     		<div class="mws-button-row">
 
     			{{csrf_field()}}
-    			<input type="submit" class="btn btn-success" value="提交">
+
+                {{method_field('PUT')}}
+    			<input type="submit" class="btn btn-success" value="修改">
     		</div>
     	</form>
     </div>    	

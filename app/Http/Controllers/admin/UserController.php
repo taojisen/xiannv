@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Config;
 use Hash;
-use App\Models\admin\User;
+use App\Models\Admin\User;
+use App\Http\Requests\FormRequest;
 
 class UserController extends Controller
 {
@@ -15,13 +16,27 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        $res = User::paginate(10);
+        //
+        // dump($request->all());
+
+       /* where('active', 1)
+               ->orderBy('name', 'desc')
+               ->take(10)
+               ->get();*/
+
+
+
+        $res = User::where('username','like','%'.$request->input('search').'%')->
+                paginate($request->input('num',10));
+
+        $arr = ['num'=>$request->input('num'),'search'=>$request->input('search')];     
 
         return view('admin.user.index',[
-            'title'=>'用户的列表页面'
+            'title'=>'用户的列表页面',
+            'res'=>$res,
+            'arr'=>$arr
         ]);
         
     }
@@ -46,10 +61,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FormRequest $request)
     {
         //表单验证
-        $this->validate($request, [
+      /*  $this->validate($request, [
             'username' => 'required|regex:/^\w{6,12}$/',
             'password' => 'required|regex:/^\S{6,12}$/',
             'repass'=>'same:password',
@@ -65,7 +80,7 @@ class UserController extends Controller
             'phone.required'=>'手机号不能为空',
             'phone.regex'=>'手机号格式不正确'
 
-        ]);
+        ]);*/
 
         $res = $request->except(['_token','profile','repass']);
 
@@ -88,17 +103,17 @@ class UserController extends Controller
         //密码加密
         $res['password'] = Hash::make($request->input('password'));
 
+        //模型   出错
+        try{
+            $data = User::create($res);
 
-        //模型
-        $data = User::create($res);
-
-        if($data){
-
-            return redirect('/admin/user')->with('info','添加成功');
-
-        } else {
+            if($data){
+                return redirect('/admin/user')->with('success','添加成功');
+            }
+        }catch(\Exception $e){
 
             return back();
+
         }
 
     }
@@ -123,6 +138,10 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $res = User::find($id);
+
+        // dump($res);
+        return view('admin.user.edit',['title'=>'用户名的修改页面','res'=>$res]);
     }
 
     /**
@@ -134,7 +153,52 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //表单验证
+
+
+        $foo = User::find($id);
+
+        $urls = $foo->profile;
+
+        // dd($urls);
+
+        $info = '@'.unlink('.'.$urls);
+
+        if(!$info)  return;
+
+        $res = $request->except('_token','_method','profile');
+
+        // dump($res);
+        if($request->hasFile('profile')){
+            //设置名字
+            $name = str_random(10).time();
+
+            //获取后缀
+            $suffix = $request->file('profile')->getClientOriginalExtension();
+
+            //移动
+            $request->file('profile')->move('./uploads/',$name.'.'.$suffix);
+
+        }
+
+       //存数据表
+        $res['profile'] = Config::get('app.path').$name.'.'.$suffix;
+
+
+         //模型   出错
+        try{
+            $data = User::where('id',$id)->update($res);
+
+            if($data){
+                return redirect('/admin/user')->with('success','修改成功');
+            }
+        }catch(\Exception $e){
+
+            return back()->with('error');
+
+        }
+
+
     }
 
     /**
@@ -146,5 +210,27 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+
+        $foo = User::find($id);
+
+        $urls = $foo->profile;
+
+        // dd($urls);
+
+        $info = '@'.unlink('.'.$urls);
+
+        if(!$info)  return;
+
+        //第一种
+        $res = User::where('id',$id)->delete();
+        //第二种
+        // $res = User::destroy($id);
+
+        if($res){
+
+            return redirect('/admin/user')->with('success','删除成功');
+        }
+
+
     }
 }

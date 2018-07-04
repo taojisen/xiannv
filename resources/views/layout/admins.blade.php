@@ -186,8 +186,15 @@
                     <li>
                         <a href="#"><i class="icon-list"></i>类别管理</a>
                         <ul class='closed'>
-                            <li><a href="/admin/cate/create">添加类别</a></li>
-                            <li><a href="/admin/cate">浏览类别</a></li>
+                            <li><a href="/admins/cate/create">添加类别</a></li>
+                            <li><a href="/admins/cate">浏览类别</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-list"></i>商品管理</a>
+                        <ul class='closed'>
+                            <li><a href="/admins/goods/create">添加商品</a></li>
+                            <li><a href="/admins/goods/">浏览商品</a></li>
                         </ul>
                     </li>
 

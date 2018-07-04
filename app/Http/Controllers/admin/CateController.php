@@ -15,16 +15,36 @@ class CateController extends Controller
      */
     public function index(Request $request)
     {
+        
+        /*多条件搜索
+        $user = User::orderBy('user_id','asc')
+            ->where(function($query) use($request){
+                //检测关键字
+                $username = $request->input('keywords1');
+                $email = $request->input('keywords2');
+                //如果用户名不为空
+                if(!empty($username)) {
+                    $query->where('user_name','like','%'.$username.'%');
+                }
+                //如果邮箱不为空
+                if(!empty($email)) {
+                    $query->where('user_email','like','%'.$email.'%');
+                }
+            })
+        ->paginate($request->input('num', 5));
+        return view('admin.user.list',['user'=>$user, 'request'=> $request]);
+         */
+        
+        // $res = User::where('username','like','%'.$request->input('search').'%')->
+        //         paginate($request->input('num',10));
 
-        if($data = $request->input('cate_name'))
-            $cate = cate::where('cate_name',$data)->get();
-        else {
-        //排序查找
-        $cate = \DB::select('select *,concat(path,cate_id) from cate order by concat(path,cate_id)');
-        }
-        return view('admin.cate.index',['title'=>'分类显示','cate'=>$cate]);
+        // $arr = ['num'=>$request->input('num'),'search'=>$request->input('search')];     
+        $aa = $request->input('cate_name');
+        $cate = cate::select(\DB::raw('*,concat(path,cate_id) as paths '))->where('cate_name','like',"%$aa%")->orderBy('paths')->paginate($request->input('num',10));
+        $data=['cate_name'=>$request->input('cate_name'),'num'=>$request->input('num')];
+        return view('admin.cate.index',['title'=>'分类显示','cate'=>$cate,'data'=>$data]);
     }
-
+ 
     /**
      * 显示添加页面
      *
@@ -33,7 +53,7 @@ class CateController extends Controller
     public function create()
     {
         $cate = \DB::select('select *,concat(path,cate_id) from cate order by concat(path,cate_id)');
-        return view('admin.cate.add',['title'=>'表单添加','cate'=>$cate]);
+        return view('admin.cate.add',['title'=>'表单添加','cate'=>$cate,'id'=>'0']);
     }
     public function add($id)
     {

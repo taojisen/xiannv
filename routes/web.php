@@ -14,10 +14,15 @@
     //     Route::get('/admins','admin\IndexController@index');
     // });
     Route::resource('/admins/user','admin\UserController');
-
+    //分类管理
     Route::group([],function(){
         Route::resource('/admins/cate','admin\CateController');
         Route::get('/admins/cate/{id}/create','admin\CateController@add' );
+    });
+    //商品管理
+    Route::group([],function(){
+        Route::resource('/admins/goods','admin\GoodsController');
+        // Route::get('/admins/goods/{id}/create','admin\GoodsController@add' );
     });
 
     // Route::get('/', function () {

@@ -7,8 +7,12 @@
             {{session('info')}}
         </div>
         @endif
+        <script src="/js/jquery.js"></script>
         <script>
-
+            // setTimeout(function(){
+            //     $('.mws-form-message').remove();
+            // },3000)
+            $('.mws-form-message').fadeOut(3000);
         </script>
 
         <div class="mws-panel-header">
@@ -16,19 +20,21 @@
         </div>
         <div class="mws-panel-body no-padding">
             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
-                <div id="DataTables_Table_0_length" class="dataTables_length">
-                    <label>显示
-                        <select size="1" name="DataTables_Table_0_length" aria-controls="DataTables_Table_0">
-                            <option value="10" selected="selected">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select> 
-                    </label>
-                </div>
-                <div class="dataTables_filter" id="DataTables_Table_0_filter">
                 <form action="/admins/cate/" method="get" style="display: inline; ">
-                    <label>查询分类: <input type="text" aria-controls="DataTables_Table_0" name="cate_name"></label>
+                    <div id="DataTables_Table_0_length" class="dataTables_length">
+                        <label>显示
+                            <select size="1" name="num" aria-controls="DataTables_Table_0">
+                                <option value="10" selected="selected">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                            </select> 
+                            <script type="text/javascript">
+                            </script>
+                        </label>
+                    </div>
+                <div class="dataTables_filter" id="DataTables_Table_0_filter">
+                
+                    <label>查询分类: <input type="text"  value="{{$data['cate_name']}}" name="cate_name"></label>
                     <button class="btn btn-primary btn-small" >查询</button>
                 </form>
                 <label><a href="/admins/cate/create" class="btn btn-primary btn-small">添加分类</a></label>
@@ -72,6 +78,12 @@
                 <a class="paginate_enabled_previous" tabindex="0" role="button" id="DataTables_Table_0_previous" >1231</a>
                 <a class="paginate_enabled_next" tabindex="0" role="button" id="DataTables_Table_0_next" aria-controls="DataTables_Table_0">Next</a>
 
+            </div>
+             <div class="dataTables_paginate paging_full_numbers" id="paginate">
+
+                {{ $cate->links() }}
+
+               
             </div>
         </div>
         </div>

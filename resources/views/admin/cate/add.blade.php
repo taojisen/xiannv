@@ -1,6 +1,7 @@
 @extends('layout.admins')
 @section('title',$title)
 @section('content')
+
 <div class="mws-panel grid_8">
     <div class="mws-panel-header">
         <span><i class="icon-ok"></i> 添加</span>
@@ -13,12 +14,13 @@
                 <div class="mws-form-row">
                     <label class="mws-form-label">选择父类</label>
                     <div class="mws-form-item">
-                        <option value="0">添加顶级分类</option>
+                        
                         <select name = 'pid' class="form-control">
-                        @foreach($cate as $k=>$v)
-                        {{ $n=substr_count($v->path,',') }}
-                          <option  @if(!empty($id==$v->cate_id)) selected @endif  value="{{$v->cate_id}}">{{str_repeat('&nbsp;',$n*5)}}|--{{ $v->cate_name}}</option>
-                        @endforeach
+                            <option value="0">添加顶级分类</option>
+                            @foreach($cate as $k=>$v)
+                            {{ $n=substr_count($v->path,',') }}
+                              <option  @if(!empty($id ==$v->cate_id)) selected @endif value="{{$v->cate_id}}">{{str_repeat('&nbsp;',$n*5)}}|--{{ $v->cate_name}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
